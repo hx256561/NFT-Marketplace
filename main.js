@@ -48,6 +48,7 @@ function renderInventory(NFTs) {
                 <p class="card-text">>${nft.metadata.description}</p>
                 <h5 class="card-title">${nft.metadata.name}</h5>
                 <a href="./mint.html?nftId=${nft.token_id}" class="btn btn-primary">Mint</a>
+                <a href="./transfer.html?nftId=${nft.token_id}" class="btn btn-primary">Transfer</a>
             </div>
         </div>
         `
