@@ -66,8 +66,14 @@ async function initializeApp() {
         currentUser = await Moralis.Web3.authenticate();
     }
 
-    const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
-    let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
+    await Moralis.enableWeb3();
+    accounts = await Moralis.account;
+
+    const options = { chain: 'rinkeby', address: accounts };
+    const NFTs = await Moralis.Web3API.account.getNFTs(options);
+
+    //const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
+    //let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
     let NFTWithMetadata = await fetchNFTMetadata(NFTs.result);
     renderInventory(NFTWithMetadata);
 }
