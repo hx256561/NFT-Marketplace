@@ -1,6 +1,8 @@
 # NFT Marketplace Project
 This is a NFT marketplace built on Rinkeby testnet, use ERC-1155.
 <br>
+Built with Moralis server and API.
+<br>
 Trading function and database still under construction, currently unavailable.
 <br><br>
 ### Home Page
