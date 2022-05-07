@@ -1,63 +1,45 @@
-
 Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", appId: "atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg" });
-//new version of Moralis start and initialize
-//Application ID from Moralis server
-//Server URL from Moralis server url
 
 const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
 
-function fetchNFTMetadata(NFTs) {
+function fetchNFTMetadata(NFT) {
     let promises = [];
-    for (let i = 0; i < NFTs.length; i++) {
-        let nft = NFTs[i];
-        let id = nft.token_id;
+    const urlParams = new URLSearchParams(window.location.search);
+    const nftId = urlParams.get("nftId");
+    for (let i = 0; i < NFT.length; i++) {
+        let nft = NFT[i];
+        //let id = nft.token_id;
 
         //Call moralis cloud function -> static json file
-        promises.push(fetch("https://u8oeui2ow1gv.usemoralis.com:2053/server/functions/getNFT?_ApplicationId=atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg&nftId=" + id)
+        promises.push(fetch("https://u8oeui2ow1gv.usemoralis.com:2053/server/functions/getNFT?_ApplicationId=atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg&nftId=" + nftId)
             .then(res => res.json())
             .then(res => JSON.parse(res.result))
             .then(res => { nft.metadata = res })
             .then(() => { return nft; }))
-
-        //The flow of the code below exceeds the service plan of my Moralis server.
-        // .then(res => {
-        //     const option = { address: CONTRACT_ADDRESS, token_id: id, chain: "rinkeby" };
-        //     return Moralis.Web3API.token.getTokenIdOwners(option)
-        // })
-        // .then((res) => {
-        //     nft.owners = [];
-        //     res.result.forEach(element => {
-        //         nft.owners.push(element.ownerOf);
-        //     });
-        //     return nft;
-        // }))
-
     }
-
     return Promise.all(promises);
 }
 
-function renderInventory(NFTs) {
+function renderInventory(NFT) {
     const parent = document.getElementById("app");
-    for (let i = 0; i < NFTs.length; i++) {
-        const nft = NFTs[i];
-        let htmlString = `
+
+    const nft = NFT[0];
+    let htmlString = `
         <div class="card">
         <img class="card-img-top" src="${nft.metadata.image}" alt="Card image cap">
             <div class="card-body">
-                <!--<p class="card-text">>${nft.metadata.description}</p>-->
+                <h5 class="card-text">> ${nft.metadata.description}</p>
                 <h5 class="card-title">> ${nft.metadata.name}</h5>
                 <h5 class="card-title">Price: 0.01 ETH</h5>
-                <!--<a href="./mint.html?nftId=${nft.token_id}" class="btn btn-primary">Mint</a>-->
-                <a href="./detail.html?nftId=${nft.token_id}" class="btn">Detail</a>
+                <a href="#" class="btn">BUY</a>
             </div>
         </div>
         `
-        let col = document.createElement("div");
-        col.className = "col col-md-4";
-        col.innerHTML = htmlString;
-        parent.appendChild(col);
-    }
+    let col = document.createElement("div");
+    col.className = "col col-md-4";
+    col.innerHTML = htmlString;
+    parent.appendChild(col);
+
 }
 
 async function initializeApp() {

@@ -5,6 +5,8 @@ Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", ap
 //Server URL from Moralis server url
 
 const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
+const ethers = Moralis.web3Library;
+
 
 function fetchNFTMetadata(NFTs) {
     let promises = [];
@@ -37,19 +39,34 @@ function fetchNFTMetadata(NFTs) {
     return Promise.all(promises);
 }
 
-function renderInventory(NFTs) {
+async function renderInventory(NFTs) {
+
+
+    await Moralis.enableWeb3();
+    accounts = await Moralis.account;
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, signer);
+
+    //console.log(tx);
+
     const parent = document.getElementById("app");
     for (let i = 0; i < NFTs.length; i++) {
         const nft = NFTs[i];
+        let nftId = nft.token_id;
+        const tx = await contract.balanceOf(accounts, nftId);
+
         let htmlString = `
         <div class="card">
         <img class="card-img-top" src="${nft.metadata.image}" alt="Card image cap">
             <div class="card-body">
-                <!--<p class="card-text">>${nft.metadata.description}</p>-->
-                <h5 class="card-title">> ${nft.metadata.name}</h5>
-                <h5 class="card-title">Price: 0.01 ETH</h5>
-                <!--<a href="./mint.html?nftId=${nft.token_id}" class="btn btn-primary">Mint</a>-->
-                <a href="./detail.html?nftId=${nft.token_id}" class="btn">Detail</a>
+            <h5 class="card-title">${nft.metadata.name}</h5>
+                <p class="card-text">> ${nft.metadata.description}</p>
+                <p class="card-text">> Own: ${tx}</p>
+                <!--<a href="./mint.html?nftId=${nft.token_id}" class="btn">Mint</a>-->
+                <a href="./transfer.html?nftId=${nft.token_id}" class="btn">Transfer</a>
             </div>
         </div>
         `
@@ -67,14 +84,14 @@ async function initializeApp() {
         currentUser = await Moralis.Web3.authenticate();
     }
 
-    // await Moralis.enableWeb3();
-    // accounts = await Moralis.account;
+    await Moralis.enableWeb3();
+    accounts = await Moralis.account;
 
-    // const options = { chain: 'rinkeby', address: accounts };
-    // const NFTs = await Moralis.Web3API.account.getNFTs(options);
+    const options = { chain: 'rinkeby', address: accounts };
+    const NFTs = await Moralis.Web3API.account.getNFTs(options);
 
-    const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
-    let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
+    // const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
+    // let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
     let NFTWithMetadata = await fetchNFTMetadata(NFTs.result);
     renderInventory(NFTWithMetadata);
 }
