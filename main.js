@@ -60,6 +60,33 @@ function renderInventory(NFTs) {
     }
 }
 
+// Code below allow us to store NFTs into our database. 
+/*
+function storeNFTs(NFTs) {
+    for (let i = 0; i < NFTs.length; i++) {
+        const nft = NFTs[i];
+        const NFTdb = Moralis.Object.extend("NFTs");
+        const nftdb = new NFTdb();
+
+        nftdb.set("name", nft.metadata.name);
+        nftdb.set("token_id", nft.token_id);
+        nftdb.set("price", 0.1);
+        nftdb.set("buyable", true);
+
+        nftdb.save().then(
+            (nftdb) => {
+                // Execute any logic that should take place after the object is saved.
+                console.log("New object created with objectId: " + nftdb.id);
+            },
+            (error) => {
+                // Execute any logic that should take place if the save fails.
+                // error is a Moralis.Error with an error code and message.
+                alert("Failed to create new object, with error code: " + error.message);
+            }
+        );
+    }
+}*/
+
 async function initializeApp() {
     let currentUser = Moralis.User.current();
     //check if the user have signed in
@@ -77,6 +104,9 @@ async function initializeApp() {
     let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
     let NFTWithMetadata = await fetchNFTMetadata(NFTs.result);
     renderInventory(NFTWithMetadata);
+
 }
+
+
 
 initializeApp();

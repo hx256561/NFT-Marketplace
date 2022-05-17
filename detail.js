@@ -20,7 +20,7 @@ function fetchNFTMetadata(NFT) {
     return Promise.all(promises);
 }
 
-function renderInventory(NFT) {
+async function renderInventory(NFT) {
     const parent = document.getElementById("app");
 
     const nft = NFT[0];
@@ -39,6 +39,13 @@ function renderInventory(NFT) {
     col.className = "col col-md-4";
     col.innerHTML = htmlString;
     parent.appendChild(col);
+
+    const query = new Moralis.Query("NFTs");
+    query.equalTo("name", nft.metadata.name);
+    const results = await query.find();
+
+    const targetNFT = results[0];
+    console.log(targetNFT.get("buyable") + ", " + targetNFT.get("token_id"));
 
 }
 
