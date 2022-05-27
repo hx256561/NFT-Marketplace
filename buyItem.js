@@ -1,9 +1,8 @@
 
-
 Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", appId: "atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg" });
 
 
-//const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
+// const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
 const CONTRACT_ADDRESS = "0x0a1a0fd0fc47df5e38f47950ff9308e03af6f682";
 
 const ethers = Moralis.web3Library;
@@ -26,7 +25,7 @@ async function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const nftId = urlParams.get("nftId");
     console.log(nftId);
-    document.getElementById("token_id_input").value = nftId;
+
 
 }
 
@@ -38,7 +37,6 @@ async function transfer() {
     const signer = provider.getSigner();
 
     let tokenId = parseInt(document.getElementById("token_id_input").value);
-    let address = document.getElementById("address_input").value;
     let amount = parseInt(document.getElementById("amount_input").value);
 
     const options = {
@@ -55,6 +53,3 @@ async function transfer() {
 document.getElementById("submit_transfer").onclick = transfer;
 
 init();
-
-
-//original: https://pc4zvkhb19ar.usemoralis.com
