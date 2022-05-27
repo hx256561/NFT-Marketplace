@@ -3,7 +3,7 @@ Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", ap
 
 
 // const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
-const CONTRACT_ADDRESS = "0x0a1a0fd0fc47df5e38f47950ff9308e03af6f682";
+const CONTRACT_ADDRESS = "0x65463e6aa6bb49e7ae007183b63c5035b669eeed";
 
 const ethers = Moralis.web3Library;
 let accounts;
@@ -29,27 +29,25 @@ async function init() {
 
 }
 
-async function transfer() {
+async function buy() {
+    console.log("ppp");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const nftId = urlParams.get("nftId");
 
     //connect to MetaMask
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
 
-    let tokenId = parseInt(document.getElementById("token_id_input").value);
     let amount = parseInt(document.getElementById("amount_input").value);
-
-    const options = {
-        type: "erc1155",
-        receiver: address,
-        contractAddress: CONTRACT_ADDRESS,
-        tokenId: tokenId,
-        amount: amount,
-    };
-    let transaction = await Moralis.transfer(options);
-    console.log(transaction);
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, signer);
+    // Seemed send is unnecessary??
+    // const tx = await contract.mint(address, tokenId, amount).send({ from: accounts, value: 0 });
+    const tx = await contract.MysafeTransferFrom("0x693d55F1587CADeB4dEe8F170ca89B1B1691b3F3", accounts, nftId, amount, "0x00");
+    await tx.wait();
 }
 
-document.getElementById("submit_transfer").onclick = transfer;
+document.getElementById("submit_buy").onclick = buy;
 
 init();

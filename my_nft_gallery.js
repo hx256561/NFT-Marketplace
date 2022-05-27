@@ -5,7 +5,7 @@ Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", ap
 //Server URL from Moralis server url
 
 //const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
-const CONTRACT_ADDRESS = "0x0a1a0fd0fc47df5e38f47950ff9308e03af6f682";
+const CONTRACT_ADDRESS = "0x65463e6aa6bb49e7ae007183b63c5035b669eeed";
 const ethers = Moralis.web3Library;
 
 
@@ -56,8 +56,7 @@ async function renderInventory(NFTs) {
     const parent = document.getElementById("app");
     for (let i = 0; i < NFTs.length; i++) {
         const nft = NFTs[i];
-        let nftId = nft.token_id;
-        const tx = await contract.balanceOf(accounts, nftId);
+        const tx = await contract.balanceOf(accounts, nft.token_id);
 
         let htmlString = `
         <div class="card">
@@ -71,10 +70,14 @@ async function renderInventory(NFTs) {
             </div>
         </div>
         `
-        let col = document.createElement("div");
-        col.className = "col col-md-4";
-        col.innerHTML = htmlString;
-        parent.appendChild(col);
+
+        if (tx >= 1) {
+            let col = document.createElement("div");
+            col.className = "col col-md-4";
+            col.innerHTML = htmlString;
+            parent.appendChild(col);
+        }
+
     }
 }
 
@@ -88,11 +91,11 @@ async function initializeApp() {
     await Moralis.enableWeb3();
     accounts = await Moralis.account;
 
-    const options = { chain: 'rinkeby', address: accounts };
-    const NFTs = await Moralis.Web3API.account.getNFTs(options);
+    // const options = { chain: 'rinkeby', address: accounts };
+    // const NFTs = await Moralis.Web3API.account.getNFTs(options);
 
-    // const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
-    // let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
+    const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
+    let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
     let NFTWithMetadata = await fetchNFTMetadata(NFTs.result);
     renderInventory(NFTWithMetadata);
 }

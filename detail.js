@@ -1,7 +1,7 @@
 Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", appId: "atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg" });
 
 //const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
-const CONTRACT_ADDRESS = "0x0a1a0fd0fc47df5e38f47950ff9308e03af6f682";
+const CONTRACT_ADDRESS = "0x65463e6aa6bb49e7ae007183b63c5035b669eeed";
 
 function fetchNFTMetadata(NFT) {
     let promises = [];
