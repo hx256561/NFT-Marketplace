@@ -4,8 +4,7 @@ Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", ap
 //Application ID from Moralis server
 //Server URL from Moralis server url
 
-//const CONTRACT_ADDRESS = "0x0191091f01e291c4dd27f1e3c8fb55dd4a63d135";
-const CONTRACT_ADDRESS = "0x896569e1310e9bf930f0dcfdcaee241dda4ae553";
+
 const ethers = Moralis.web3Library;
 
 
@@ -49,7 +48,7 @@ async function renderInventory(NFTs) {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi, signer);
+    const contract = new ethers.Contract(ADDRESS, contractAbi, signer);
 
     //console.log(tx);
 
@@ -94,7 +93,7 @@ async function initializeApp() {
     // const options = { chain: 'rinkeby', address: accounts };
     // const NFTs = await Moralis.Web3API.account.getNFTs(options);
 
-    const options = { address: CONTRACT_ADDRESS, chain: "rinkeby" };
+    const options = { address: ADDRESS, chain: "rinkeby" };
     let NFTs = await Moralis.Web3API.token.getAllTokenIds(options);
     let NFTWithMetadata = await fetchNFTMetadata(NFTs.result);
     renderInventory(NFTWithMetadata);

@@ -22,8 +22,8 @@ contract NFTContract is ERC1155, Ownable{
 
     constructor() ERC1155("https://lhcutp47xmyd.usemoralis.com/{id}.json"){
         _mint(msg.sender, ARTWORK, 1, "");
-        _mint(msg.sender, PHOTO, 2, "");
-        _mint(msg.sender, PHOTO2, 3, "");
+        _mint(msg.sender, PHOTO, 1, "");
+        _mint(msg.sender, PHOTO2, 1, "");
 
         itemsForSell.push(NFTitem(0, msg.sender, true));
         itemsForSell.push(NFTitem(1, msg.sender, true));
@@ -62,4 +62,4 @@ contract NFTContract is ERC1155, Ownable{
 //test2: 0x693d55F1587CADeB4dEe8F170ca89B1B1691b3F3
 
 //-----new deploy contract
-// 0x896569e1310e9bf930f0dcfdcaee241dda4ae553
+// 0x29f9ee324bb9466eee199d36de39ffb077c431b5
