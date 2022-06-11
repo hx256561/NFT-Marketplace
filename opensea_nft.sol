@@ -45,9 +45,20 @@ contract NFTContract is ERC1155, Ownable{
     }
 
     function MysafeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes memory data) public {
+        require(itemsForSell[id].buyable==true);
         _safeTransferFrom(from, to, id, amount, data);
         itemsForSell[id].seller=to;
         itemsForSell[id].buyable=false;
+    }
+
+    function sellable(uint256 id) public view returns (bool){
+        return itemsForSell[id].buyable;
+    }
+
+    function changeToSell(uint256 id) public {
+        require(getOwner(id)==msg.sender);
+        require(itemsForSell[id].buyable==false);
+        itemsForSell[id].buyable=true;
     }
 
 
@@ -63,3 +74,4 @@ contract NFTContract is ERC1155, Ownable{
 
 //-----new deploy contract
 // 0x29f9ee324bb9466eee199d36de39ffb077c431b5
+//0xcebafaf03f9df763170ecc8e59d637ba6742aad9
