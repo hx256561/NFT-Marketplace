@@ -1,5 +1,4 @@
 
-
 Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", appId: "atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg" });
 
 
@@ -7,6 +6,7 @@ Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", ap
 
 const ethers = Moralis.web3Library;
 let accounts;
+
 
 
 async function init() {
@@ -29,31 +29,26 @@ async function init() {
 
 }
 
-async function transfer() {
+async function sell() {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const nftId = urlParams.get("nftId");
+    console.log(nftId);
 
     //connect to MetaMask
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
 
-    let tokenId = parseInt(document.getElementById("token_id_input").value);
-    let address = document.getElementById("address_input").value;
-    let amount = parseInt(document.getElementById("amount_input").value);
+    const contract = new ethers.Contract(ADDRESS, contractAbi, signer);
+    const tx = await contract.changeToSell(nftId);
+    await tx.wait();
 
-    const options = {
-        type: "erc1155",
-        receiver: address,
-        contractAddress: ADDRESS,
-        tokenId: tokenId,
-        amount: 1,
-    };
-    let transaction = await Moralis.transfer(options);
-    console.log(transaction);
+
+
+
 }
 
-document.getElementById("submit_transfer").onclick = transfer;
+document.getElementById("submit_sell").onclick = sell;
 
 init();
-
-
-//original: https://pc4zvkhb19ar.usemoralis.com

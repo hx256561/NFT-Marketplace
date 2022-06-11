@@ -1,5 +1,6 @@
 Moralis.start({ serverUrl: "https://u8oeui2ow1gv.usemoralis.com:2053/server", appId: "atphTdiuUd2EmqyjU1mfRWIaZf5maSRsUZaOAyvg" });
 
+const ethers = Moralis.web3Library;
 
 function fetchNFTMetadata(NFT) {
     let promises = [];
@@ -23,6 +24,12 @@ async function renderInventory(NFT) {
     const parent = document.getElementById("app");
     const urlParams = new URLSearchParams(window.location.search);
     const nftId = urlParams.get("nftId");
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(ADDRESS, contractAbi, signer);
+    const tx = await contract.sellable(nftId);
 
     const nft = NFT[0];
     let htmlString = `
@@ -50,8 +57,9 @@ async function renderInventory(NFT) {
     const results = await query.find();
     const targetNFT = results[0];
 
+    console.log(tx);
     //If NFT is buyable, then show buy button
-    if (targetNFT.get("buyable") === true) {
+    if (tx === true) {
         const parent = document.getElementById("discription");
         let btn = document.createElement("a");
         btn.innerHTML = htmlbtn;

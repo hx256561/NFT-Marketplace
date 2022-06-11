@@ -51,7 +51,7 @@ async function buy() {
     const sellerId = await contract.getOwner(nftId);
     // Seemed send is unnecessary??
     // const tx = await contract.mint(address, tokenId, amount).send({ from: accounts, value: 0 });
-    const tx = await contract.MysafeTransferFrom(sellerId, accounts, nftId, amount, "0x00");
+    const tx = await contract.MysafeTransferFrom(sellerId, accounts, nftId, 1, "0x00");
     await tx.wait();
 
     const options = {

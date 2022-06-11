@@ -15,32 +15,28 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./index_style.css">
 </head>
 
-<body>
-    <div class="jumbotron jumbotron-fluid">
+<body style="background-color: black; color: white;">
+    <div class="jumbotron jumbotron-fluid" style="background-color: black;">
         <div class="container">
-            <h1 class="display-4">Welcome</h1>
+            <h1 id="buyItem_title" class="display-4" style="color: #F0A2DA;">Welcome</h1>
         </div>
     </div>
     <div class="container">
-        <div class="row" id="app">
-            <div class="col col-md-12">
+        <div class="row justify-content-center" id="app">
+            <div id="buy_col" class="col col-md-4">
                 <div>
                     <label>Token id</label>
                     <input id="token_id_input" type="number">
-                </div>
-                <div>
-                    <label>Amount</label>
-                    <input id="amount_input" type="number">
                 </div>
                 <div>
                     <label>Address</label>
                     <input id="address_input" type="text">
                 </div>
                 <div>
-                    <button class="btn btn-primary" id="submit_transfer">Transfer</button>
+                    <button class="btn" id="submit_transfer">Transfer</button>
                 </div>
             </div>
 

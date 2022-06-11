@@ -66,6 +66,7 @@ async function renderInventory(NFTs) {
                 <p class="card-text">> Own: ${tx}</p>
                 <!--<a href="./mint.html?nftId=${nft.token_id}" class="btn">Mint</a>-->
                 <a href="./transfer.html?nftId=${nft.token_id}" class="btn">Transfer</a>
+                <a href="./sell.html?nftId=${nft.token_id}" id="sellBtn" class="btn">Sell</a>
             </div>
         </div>
         `
@@ -79,6 +80,7 @@ async function renderInventory(NFTs) {
 
     }
 }
+
 
 async function initializeApp() {
     let currentUser = Moralis.User.current();
